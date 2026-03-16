@@ -1,0 +1,34 @@
+{
+  "domain": "person",
+  "description": "Domæneprofil der specialiserer den generiske Subject-klasse til Person",
+
+  "class_mappings": {
+    "Subject": "Person"
+  },
+
+  "attribute_mappings": {
+    "Subject.subjectId": "personId",
+    "Subject.name": "fullName"
+  },
+
+  "required": {
+    "Person": [
+      "personId",
+      "fullName"
+    ]
+  },
+
+  "additional_attributes": {
+    "Person": [
+      {
+        "name": "email",
+        "type": "string",
+        "format": "email"
+      },
+      {
+        "name": "department",
+        "type": "string"
+      }
+    ]
+  }
+}
