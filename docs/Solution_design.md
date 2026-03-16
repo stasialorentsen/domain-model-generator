@@ -1,306 +1,186 @@
-\# Løsningsdesign - automatisk modelafledning
+# Løsningsdesign - automatisk modelafledning
 
+Denne løsning implementerer en simpel pipeline, der omsætter en informationsmodel fra et draw.io-diagram til et domænespecifikt JSON Schema.
 
+Formålet er at gøre metamodellen maskinelt analyserbar og at kunne generere forskellige domænemodeller ud fra den samme generiske struktur.
 
-\## Formål
+Pipeline består af tre trin:
 
-Løsningen operationaliserer pipeline for automatisk modelafledning:
+1. draw.io XML → kanonisk JSON-model
+2. kanonisk model → domæneprofil (mapping)
+3. kanonisk model + domæneprofil → JSON Schema
 
+Dette adskiller:
 
+* visuel modellering (draw.io)
+* generisk modelstruktur (kanonisk model)
+* domænespecifik specialisering (domæneprofil)
+* formel struktur til validering (JSON Schema)
 
-1\. \*\*draw.io XML → kanonisk JSON-model\*\*
+---
 
-2\. \*\*kanonisk JSON-model → JSON Schema\*\*
-
-
-
-Målet er at gøre metamodellen maskinelt analyserbar via en enkel, regelbaseret transformation med tydelige mellemrepræsentationer.
-
-
-
-\---
-
-
-
-\## Scope (prototype)
-
-
-
-\### Indgår
-
-\- Udtræk af klasser fra draw.io XML.
-
-\- Udtræk af attributter (UML-lignende tekstlinjer).
-
-\- Udtræk af relationer mellem klasser.
-
-\- Generering af JSON Schema med `$defs`, `properties`, `required` og `additionalProperties: false`.
-
-
-
-\### Indgår ikke endnu
-
-\- Kardinaliteter (`0..1`, `1..\*`, osv.) som formelle schema-regler.
-
-\- Semantiske constraints (Schematron/XSD-regler).
-
-\- Avanceret relationel validering med `$ref` mellem klasser.
-
-
-
-\---
-
-
-
-\## Arkitektur
-
-
-
-Pipeline består af to scripts i `scripts/`:
-
-
-
-\- `drawio\_to\_canonical.py`
-
-&#x20; - Input: draw.io XML
-
-&#x20; - Output: kanonisk model (`model.canonical.json`)
-
-\- `canonical\_to\_schema.py`
-
-&#x20; - Input: kanonisk model
-
-&#x20; - Output: JSON Schema (`domain.schema.json`)
-
-
-
-Designvalg:
-
-\- Bevidst simpel og transparent implementation.
-
-\- Mellemformat (kanonisk JSON) holder visualisering adskilt fra formel validering.
-
-\- Regler er eksplicitte i kode, så afledningen er reproducerbar.
-
-
-
-\---
-
-
-
-\## Funktionelt design
-
-
-
-\## 1) draw.io XML → kanonisk model
-
-
-
-\### Inputforventning
-
-\- XML med `mxCell`-noder fra draw.io eksport.
-
-\- Klasser er markeret som `vertex="1"` + `style` indeholder `swimlane`.
-
-\- Attributter er tekstfelter under klasse (`parent` peger på klasse-id, `style` indeholder `text;`).
-
-\- Relationer er edges med `source`/`target` der matcher kendte klasse-id'er.
-
-
-
-\### Transformationsregler
-
-\- `swimlane` → klasse.
-
-\- Attributlinje i format `+ name: Type` → attribut med `name` + JSON type.
-
-\- Edge mellem to klasser → relation `{name, from, to}`.
-
-
-
-\### Type-mapping
-
-\- `String` → `string`
-
-\- `Integer` / `Int` → `integer`
-
-\- `Float` / `Double` → `number`
-
-\- `Boolean` / `Bool` → `boolean`
-
-\- `Date` → `string` + `format: date`
-
-\- `DateTime` → `string` + `format: date-time`
-
-\- Ukendt type → fallback `string`
-
-
-
-\### Outputstruktur
-
-```json
-
-{
-
-&#x20; "version": "0.1.0",
-
-&#x20; "classes": \[
-
-&#x20;   {
-
-&#x20;     "id": "...",
-
-&#x20;     "name": "Subject",
-
-&#x20;     "attributes": \[
-
-&#x20;       {"name": "subjectId", "type": "string"}
-
-&#x20;     ]
-
-&#x20;   }
-
-&#x20; ],
-
-&#x20; "relationships": \[
-
-&#x20;   {"name": "Subject\_to\_Resource", "from": "Subject", "to": "Resource"}
-
-&#x20; ]
-
-}
+# Pipeline
 
 ```
-
-
-
-\---
-
-
-
-\## 2) kanonisk model → JSON Schema
-
-
-
-\### Inputforventning
-
-\- JSON-dokument med `classes\[]`.
-
-\- Hver klasse har `name` og evt. `attributes\[]`.
-
-
-
-\### Transformationsregler
-
-\- Klasse → entry i `$defs`.
-
-\- Attribut → `properties.<attr\_name>.type`.
-
-\- Hvis attribut har `format`, videreføres den.
-
-\- Hvis attribut har `required=true`, tilføjes navn i klassens `required`-liste.
-
-\- Hver klasse får `additionalProperties: false`.
-
-
-
-\### Outputstruktur (forenklet)
-
-```json
-
-{
-
-&#x20; "$schema": "https://json-schema.org/draft/2020-12/schema",
-
-&#x20; "$defs": {
-
-&#x20;   "Subject": {
-
-&#x20;     "type": "object",
-
-&#x20;     "properties": {
-
-&#x20;       "subjectId": {"type": "string"}
-
-&#x20;     },
-
-&#x20;     "additionalProperties": false
-
-&#x20;   }
-
-&#x20; }
-
-}
-
+draw.io model
+      ↓
+drawio_to_canonical.py
+      ↓
+model.canonical.json
+      ↓
+person_domain_profile.json
+      ↓
+canonical_to_domain_schema.py
+      ↓
+person.schema.json
 ```
 
+---
 
+# Arkitektur
 
-\---
+Løsningen består af to scripts og en domæneprofil.
 
+## drawio_to_canonical.py
 
+Læser draw.io XML og udtrækker modellens strukturelle elementer.
 
-\## Ikke-funktionelle krav
+Udtrækker:
 
-\- \*\*Reproducerbarhed:\*\* Samme input giver samme output.
+* klasser (swimlanes)
+* attributter fra klassens tekst
+* relationer mellem klasser
 
-\- \*\*Læsbarhed:\*\* Korte kommentarer og tydelig regelkode.
+Output er en kanonisk JSON-model:
 
-\- \*\*Simpel CLI:\*\* `--input` og `--output` med standardstier.
+```
+model.canonical.json
+```
 
-\- \*\*Robust IO:\*\* Fejl ved manglende inputfil; outputmapper oprettes automatisk.
+Denne model fungerer som et stabilt mellemformat mellem diagrammet og de efterfølgende transformationer.
 
+---
 
+## canonical_to_domain_schema.py
 
-\---
+Genererer et JSON Schema ud fra:
 
+* den kanoniske model
+* en domæneprofil
 
+Transformationen omsætter:
 
-\## Kvalitet og validering
+* klasser → `$defs`
+* attributter → `properties`
 
-Nuværende minimumsvalidering:
+Domæneprofilen bruges til at:
 
-\- Python syntaks/kompilering (`py\_compile`).
+* omdøbe klasser
+* omdøbe attributter
+* definere obligatoriske felter
+* tilføje domænespecifikke attributter
 
+Output bliver et schema for det valgte domæne, fx:
 
+```
+person.schema.json
+```
 
-Anbefalet næste testniveau:
+---
 
-\- Referencefiler i `experiments/` med forventet canonical/schema output.
+# Domæneprofil
 
-\- Golden-file tests (snapshot-lignende).
+Metamodellen bruger generelle begreber som fx:
 
-\- Negative tests for ugyldig attributsyntaks og manglende felter.
+```
+Subject
+Resource
+ProcessEvent
+```
 
+En domæneprofil beskriver hvordan disse begreber oversættes til et konkret domæne.
 
+Eksempel:
 
-\---
+```
+Subject → Person
+subjectId → personId
+name → fullName
+```
 
+Profilen fungerer derfor som et mapping-lag mellem den generiske model og det konkrete domæne.
 
+---
 
-\## Næste iterationer
+# Transformationslogik
 
-1\. Udvid relationer til formelle `$ref`-koblinger i schema.
+Schema-generatoren arbejder efter en simpel regelbaseret proces.
 
-2\. Modelér kardinaliteter fra diagram i canonical-format.
+Pseudoalgoritme:
 
-3\. Tilføj constraints-lag (fx Schematron-regler) til semantisk validering.
+```
+læs canonical model
+læs domain profile
 
-4\. Etabler testpakke med små domæneeksempler (fx HR/studieadministration).
+for hver klasse i canonical model:
+    find domænenavn for klassen
+    opret tom properties-liste
 
+    for hver attribut i klassen:
+        find domænenavn for attributten
+        opret property med type
+        bevar format hvis det findes
 
+    tilføj ekstra attributter fra domain profile
+    fastlæg required-felter
+    opret schema-definition for klassen
 
-\---
+saml alle definitioner i $defs
+skriv JSON Schema til fil
+```
 
+Den samme transformationslogik kan derfor bruges til flere domæner.
+Kun domæneprofilen ændres.
 
+---
 
-\## Leverancer i repo
+# Scope (prototype)
 
-\- `scripts/drawio\_to\_canonical.py`
+### Implementeret
 
-\- `scripts/canonical\_to\_schema.py`
+* udtræk af klasser fra draw.io
+* udtræk af attributter
+* udtræk af relationer
+* generering af kanonisk model
+* domænespecialisering via profil
+* generering af JSON Schema
 
-\- `docs/loesningsdesign.md` (dette dokument)
+### Ikke implementeret endnu
 
+* kardinaliteter (`0..1`, `1..*`)
+* `$ref`-relationer i schema
+* semantiske regler (Schematron/XSD)
 
+---
 
+# Repo struktur
+
+```
+scripts/
+  drawio_to_canonical.py
+  canonical_to_domain_schema.py
+
+profiles/
+  person_domain_profile.json
+
+model_canonical/
+  model.canonical.json
+
+schema/
+  person.schema.json
+
+docs/
+  solution_design.md
+```
+
+---
