@@ -1,0 +1,210 @@
+{
+  "version": "0.1.0",
+  "classes": [
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-2",
+      "name": "Subject",
+      "attributes": [
+        {
+          "name": "subjectId",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "subjectType",
+          "type": "string"
+        },
+        {
+          "name": "primaryIdentifier",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-7",
+      "name": "Resource",
+      "attributes": [
+        {
+          "name": "resourceId",
+          "type": "string"
+        },
+        {
+          "name": "resourceType",
+          "type": "string"
+        },
+        {
+          "name": "domain",
+          "type": "string"
+        },
+        {
+          "name": "owner",
+          "type": "string"
+        },
+        {
+          "name": "lifecycleStage",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-13",
+      "name": "MetadataCommon",
+      "attributes": [
+        {
+          "name": "purpose",
+          "type": "string"
+        },
+        {
+          "name": "classificationLevel",
+          "type": "string"
+        },
+        {
+          "name": "lawfulBasisRef",
+          "type": "string"
+        },
+        {
+          "name": "retentionPolicyRef",
+          "type": "string"
+        },
+        {
+          "name": "securityLevel",
+          "type": "string"
+        },
+        {
+          "name": "criticality",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-20",
+      "name": "Storage",
+      "attributes": [
+        {
+          "name": "storageId",
+          "type": "string"
+        },
+        {
+          "name": "storageType",
+          "type": "string"
+        },
+        {
+          "name": "location",
+          "type": "string"
+        },
+        {
+          "name": "managedBy",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-25",
+      "name": "ProcessEvent",
+      "attributes": [
+        {
+          "name": "processId",
+          "type": "string"
+        },
+        {
+          "name": "processType",
+          "type": "string"
+        },
+        {
+          "name": "lifecycleStage",
+          "type": "string"
+        },
+        {
+          "name": "responsibleUnit",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-30",
+      "name": "AccessLogEntry",
+      "attributes": [
+        {
+          "name": "logId",
+          "type": "string"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "name": "action",
+          "type": "string"
+        },
+        {
+          "name": "resourceRef",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "JZf-lMQR9-Nxsu_enfEH-35",
+      "name": "PolicyConstraint",
+      "attributes": [
+        {
+          "name": "ruleId",
+          "type": "string"
+        },
+        {
+          "name": "ruleType",
+          "type": "string"
+        },
+        {
+          "name": "reference",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "related_to",
+      "from": "Subject",
+      "to": "Resource"
+    },
+    {
+      "name": "classified_by",
+      "from": "Resource",
+      "to": "MetadataCommon"
+    },
+    {
+      "name": "stored_in",
+      "from": "Resource",
+      "to": "Storage"
+    },
+    {
+      "name": "acts_on",
+      "from": "ProcessEvent",
+      "to": "Resource"
+    },
+    {
+      "name": "by_subject",
+      "from": "AccessLogEntry",
+      "to": "Subject"
+    },
+    {
+      "name": "targets_resource",
+      "from": "AccessLogEntry",
+      "to": "Resource"
+    },
+    {
+      "name": "targets_storage",
+      "from": "AccessLogEntry",
+      "to": "Storage"
+    },
+    {
+      "name": "applies_to",
+      "from": "PolicyConstraint",
+      "to": "MetadataCommon"
+    }
+  ]
+}
