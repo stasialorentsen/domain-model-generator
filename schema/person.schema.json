@@ -25,6 +25,12 @@
         },
         "department": {
           "type": "string"
+        },
+        "related_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Resource"
+          }
         }
       },
       "additionalProperties": false,
@@ -50,9 +56,19 @@
         },
         "lifecycleStage": {
           "type": "string"
+        },
+        "classified_by": {
+          "$ref": "#/$defs/MetadataCommon"
+        },
+        "stored_in": {
+          "$ref": "#/$defs/Storage"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": [
+        "classified_by",
+        "stored_in"
+      ]
     },
     "MetadataCommon": {
       "type": "object",
@@ -110,6 +126,12 @@
         },
         "responsibleUnit": {
           "type": "string"
+        },
+        "acts_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Resource"
+          }
         }
       },
       "additionalProperties": false
@@ -129,9 +151,21 @@
         },
         "resourceRef": {
           "type": "string"
+        },
+        "by_subject": {
+          "$ref": "#/$defs/Person"
+        },
+        "targets_resource": {
+          "$ref": "#/$defs/Resource"
+        },
+        "targets_storage": {
+          "$ref": "#/$defs/Storage"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": [
+        "by_subject"
+      ]
     },
     "PolicyConstraint": {
       "type": "object",
@@ -144,6 +178,12 @@
         },
         "reference": {
           "type": "string"
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MetadataCommon"
+          }
         }
       },
       "additionalProperties": false

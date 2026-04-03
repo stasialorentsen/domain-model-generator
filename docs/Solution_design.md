@@ -28,11 +28,11 @@ index afc0aa3bd3f069f93fa718b2ec04f99bc8fca2dd..d40a50470be3e8256e0cc4484c3ec65e
        ↓
  model.canonical.json
        ↓
-+person_domain_profile.json / biobank_domain_profile.json
+person_domain_profile.json / biobank_domain_profile.json
        ↓
  canonical_to_domain_schema.py
        ↓
-+person.schema.json / biobank.schema.json
+person.schema.json / biobank.schema.json
  ```
  
  ---
@@ -67,11 +67,11 @@ index afc0aa3bd3f069f93fa718b2ec04f99bc8fca2dd..d40a50470be3e8256e0cc4484c3ec65e
  * domænespecialisering via profil
  * generering af JSON Schema
  
- ### Ikke implementeret endnu
- 
- * kardinaliteter (`0..1`, `1..*`)
- * `$ref`-relationer i schema
- * semantiske regler (Schematron/XSD)
+### Delvist implementeret
+
+* relationer i canonical-model omsættes nu til `$ref` og arrays i schema
+* kardinaliteter (`0..1`, `1`, `0..*`, `1..*`) omsættes til optional/required samt array-min/max
+
  
  ---
  

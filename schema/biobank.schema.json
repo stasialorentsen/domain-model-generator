@@ -18,6 +18,12 @@
         },
         "projectCode": {
           "type": "string"
+        },
+        "related_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BiodataDataset"
+          }
         }
       },
       "additionalProperties": false,
@@ -52,6 +58,12 @@
         },
         "recordCount": {
           "type": "integer"
+        },
+        "classified_by": {
+          "$ref": "#/$defs/MetadataCommon"
+        },
+        "stored_in": {
+          "$ref": "#/$defs/Freezer"
         }
       },
       "additionalProperties": false,
@@ -59,7 +71,9 @@
         "datasetId",
         "datasetType",
         "dataOwnerUnit",
-        "datasetLifecycleStage"
+        "datasetLifecycleStage",
+        "classified_by",
+        "stored_in"
       ]
     },
     "MetadataCommon": {
@@ -128,6 +142,12 @@
         },
         "responsibleUnit": {
           "type": "string"
+        },
+        "acts_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BiodataDataset"
+          }
         }
       },
       "additionalProperties": false
@@ -150,6 +170,15 @@
         },
         "cardReaderId": {
           "type": "string"
+        },
+        "by_subject": {
+          "$ref": "#/$defs/ResearchProject"
+        },
+        "targets_resource": {
+          "$ref": "#/$defs/BiodataDataset"
+        },
+        "targets_storage": {
+          "$ref": "#/$defs/Freezer"
         }
       },
       "additionalProperties": false,
@@ -157,7 +186,8 @@
         "accessLogId",
         "timestamp",
         "action",
-        "datasetRef"
+        "datasetRef",
+        "by_subject"
       ]
     },
     "PolicyConstraint": {
@@ -171,6 +201,12 @@
         },
         "reference": {
           "type": "string"
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MetadataCommon"
+          }
         }
       },
       "additionalProperties": false

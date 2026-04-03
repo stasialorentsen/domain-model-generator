@@ -22,6 +22,20 @@ def clean_value(raw: str) -> str:
         return ""
     return raw.strip()
 
+def parse_cardinality(raw: str) -> str | None:
+    """Return normalized cardinality text (e.g. 0..1, 1..*, 1)."""
+    text = clean_value(raw)
+    if not text:
+        return None
+
+    if re.fullmatch(r"\d+\.\.(\d+|\*)", text):
+        return text
+    if re.fullmatch(r"\d+", text):
+        return text
+    if text == "*":
+        return "0..*"
+
+    return None
 
 def parse_attribute(value: str) -> dict | None:
     """Parse attributlinje i stil med '+ field: Type'."""
@@ -109,6 +123,27 @@ def parse_drawio(xml_path: Path) -> dict:
                 class_lookup[parent]["attributes"].append(attr)
 
     # Pass 3: find relationer mellem klasser
+    # Edge labels (child cells) kan indeholde kardinaliteter.
+    edge_labels: dict[str, list[tuple[float, str]]] = {}
+    for cell in cells:
+        parent = cell.get("parent")
+        style = cell.get("style") or ""
+        value = clean_value(cell.get("value") or "")
+        if not parent or "edgeLabel" not in style:
+            continue
+    
+        cardinality = parse_cardinality(value)
+        if not cardinality:
+            continue
+    
+        geom = cell.find("mxGeometry")
+        try:
+            x_pos = float((geom.get("x") if geom is not None else "0") or "0")
+        except ValueError:
+            x_pos = 0.0
+    
+        edge_labels.setdefault(parent, []).append((x_pos, cardinality))
+        
     relationships = []
 
     for cell in cells:
@@ -118,11 +153,28 @@ def parse_drawio(xml_path: Path) -> dict:
 
         # Tag kun edges hvor begge ender er kendte klasser
         if source in class_ids and target in class_ids:
+            source_cardinality = None
+            target_cardinality = None
+
+            labels = edge_labels.get(cell.get("id", ""), [])
+            if labels:
+                labels = sorted(labels, key=lambda item: item[0])
+                if len(labels) == 1:
+                    if labels[0][0] < 0:
+                        source_cardinality = labels[0][1]
+                    else:
+                        target_cardinality = labels[0][1]
+                else:
+                    source_cardinality = labels[0][1]
+                    target_cardinality = labels[-1][1]
+
             relationships.append(
                 {
                     "name": value or f"{id_to_label[source]}_to_{id_to_label[target]}",
                     "from": id_to_label[source],
                     "to": id_to_label[target],
+                    "source_cardinality": source_cardinality,
+                    "target_cardinality": target_cardinality,
                 }
             )
 

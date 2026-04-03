@@ -11,8 +11,25 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 DEFAULT_INPUT = PROJECT_ROOT / "model_canonical" / "model.canonical.json"
-DEFAULT_PROFILE = PROJECT_ROOT / "profiles" / "biobank_domain_profile.json"
+DEFAULT_PROFILE = PROJECT_ROOT / "profiles" / "person_domain_profile.json"
 DEFAULT_OUTPUT = PROJECT_ROOT / "schema" / "domain.schema.json"
+
+def parse_cardinality(raw: str | None) -> tuple[int, int | None]:
+    """Parse cardinality to min/max (max=None means unbounded)."""
+    if not raw:
+        return 0, None
+
+    text = raw.strip()
+    if text == "*":
+        return 0, None
+    if ".." in text:
+        left, right = text.split("..", 1)
+        min_items = int(left)
+        max_items = None if right == "*" else int(right)
+        return min_items, max_items
+
+    exact = int(text)
+    return exact, exact
 
 
 def to_json_schema(canonical: dict, profile: dict) -> dict:
@@ -24,6 +41,10 @@ def to_json_schema(canonical: dict, profile: dict) -> dict:
     attr_map = profile.get("attribute_mappings", {})
     required_map = profile.get("required", {})
     extra_attrs = profile.get("additional_attributes", {})
+    
+    class_schemas: dict[str, dict] = {}
+    class_required: dict[str, list[str]] = {}
+
 
     for class_obj in canonical.get("classes", []):
         canonical_class = class_obj["name"]
@@ -73,6 +94,50 @@ def to_json_schema(canonical: dict, profile: dict) -> dict:
             class_schema["required"] = required
 
         defs[class_name] = class_schema
+        class_schemas[class_name] = class_schema
+        class_required[class_name] = required
+
+    # Tilføj relationer som $ref/array-properties baseret på kardinalitet
+    for rel in canonical.get("relationships", []):
+        canonical_from = rel.get("from")
+        canonical_to = rel.get("to")
+        if not canonical_from or not canonical_to:
+            continue
+    
+        from_class = class_map.get(canonical_from, canonical_from)
+        to_class = class_map.get(canonical_to, canonical_to)
+    
+        if from_class not in class_schemas or to_class not in class_schemas:
+            continue
+    
+        rel_name = rel.get("name", "").strip() or f"{canonical_to.lower()}Ref"
+        from_schema = class_schemas[from_class]
+        from_required = class_required[from_class]
+    
+        min_items, max_items = parse_cardinality(rel.get("target_cardinality"))
+        ref_schema = {"$ref": f"#/$defs/{to_class}"}
+    
+        if max_items is None or max_items > 1:
+            rel_schema = {
+                "type": "array",
+                "items": ref_schema,
+            }
+            if min_items > 0:
+                rel_schema["minItems"] = min_items
+            if max_items is not None:
+                rel_schema["maxItems"] = max_items
+        else:
+            rel_schema = ref_schema
+    
+        prop_name = rel_name
+        if prop_name in from_schema["properties"]:
+            prop_name = f"{prop_name}Ref"
+    
+        from_schema["properties"][prop_name] = rel_schema
+    
+        if min_items > 0 and prop_name not in from_required:
+            from_required.append(prop_name)
+            from_schema["required"] = from_required
 
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",

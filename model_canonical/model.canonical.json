@@ -169,42 +169,58 @@
     {
       "name": "related_to",
       "from": "Subject",
-      "to": "Resource"
+      "to": "Resource",
+      "source_cardinality": "0..*",
+      "target_cardinality": "0..*"
     },
     {
       "name": "classified_by",
       "from": "Resource",
-      "to": "MetadataCommon"
+      "to": "MetadataCommon",
+      "source_cardinality": "1",
+      "target_cardinality": "1"
     },
     {
       "name": "stored_in",
       "from": "Resource",
-      "to": "Storage"
+      "to": "Storage",
+      "source_cardinality": "0..*",
+      "target_cardinality": "1"
     },
     {
       "name": "acts_on",
       "from": "ProcessEvent",
-      "to": "Resource"
+      "to": "Resource",
+      "source_cardinality": "0..*",
+      "target_cardinality": "0..*"
     },
     {
       "name": "by_subject",
       "from": "AccessLogEntry",
-      "to": "Subject"
+      "to": "Subject",
+      "source_cardinality": "0..*",
+      "target_cardinality": "1"
     },
     {
       "name": "targets_resource",
       "from": "AccessLogEntry",
-      "to": "Resource"
+      "to": "Resource",
+      "source_cardinality": "0..*",
+      "target_cardinality": "0..1"
     },
     {
       "name": "targets_storage",
       "from": "AccessLogEntry",
-      "to": "Storage"
+      "to": "Storage",
+      "source_cardinality": "0..*",
+      "target_cardinality": "0..1"
     },
     {
       "name": "applies_to",
       "from": "PolicyConstraint",
-      "to": "MetadataCommon"
+      "to": "MetadataCommon",
+      "source_cardinality": "0..*",
+      "target_cardinality": "0..*"
     }
   ]
 }
