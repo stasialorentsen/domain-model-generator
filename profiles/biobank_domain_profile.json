@@ -1,0 +1,95 @@
+{
+  "domain": "biobank",
+  "description": "Domain profile for biodata datasets stored in freezers, organized under research projects.",
+
+  "class_mappings": {
+    "Subject": "ResearchProject",
+    "Resource": "BiodataDataset",
+    "Storage": "Freezer",
+    "ProcessEvent": "DatasetLifecycleEvent",
+    "AccessLogEntry": "StorageAccessLog"
+  },
+
+  "attribute_mappings": {
+    "Subject.subjectId": "projectId",
+    "Subject.name": "projectName",
+    "Subject.subjectType": "projectType",
+    "Subject.primaryIdentifier": "projectCode",
+
+    "Resource.resourceId": "datasetId",
+    "Resource.resourceType": "datasetType",
+    "Resource.domain": "researchDomain",
+    "Resource.owner": "dataOwnerUnit",
+    "Resource.lifecycleStage": "datasetLifecycleStage",
+
+    "Storage.storageId": "freezerId",
+    "Storage.storageType": "freezerType",
+    "Storage.location": "location",
+    "Storage.managedBy": "managedBy",
+
+    "ProcessEvent.processId": "eventId",
+    "ProcessEvent.processType": "eventType",
+    "ProcessEvent.lifecycleStage": "lifecycleStage",
+    "ProcessEvent.responsibleUnit": "responsibleUnit",
+
+    "AccessLogEntry.logId": "accessLogId",
+    "AccessLogEntry.action": "action",
+    "AccessLogEntry.resourceRef": "datasetRef"
+  },
+
+  "required": {
+    "ResearchProject": [
+      "projectId",
+      "projectName"
+    ],
+    "BiodataDataset": [
+      "datasetId",
+      "datasetType",
+      "dataOwnerUnit",
+      "datasetLifecycleStage"
+    ],
+    "Freezer": [
+      "freezerId",
+      "location"
+    ],
+    "StorageAccessLog": [
+      "accessLogId",
+      "timestamp",
+      "action",
+      "datasetRef"
+    ]
+  },
+
+  "additional_attributes": {
+    "BiodataDataset": [
+      {
+        "name": "projectRef",
+        "type": "string"
+      },
+      {
+        "name": "containsSensitiveData",
+        "type": "boolean"
+      },
+      {
+        "name": "recordCount",
+        "type": "integer"
+      }
+    ],
+    "Freezer": [
+      {
+        "name": "targetTemperatureC",
+        "type": "number"
+      },
+      {
+        "name": "backupPower",
+        "type": "boolean"
+      }
+    ],
+    "StorageAccessLog": [
+      {
+        "name": "cardReaderId",
+        "type": "string"
+      }
+    ]
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/biobank.schema.json",
+  "title": "Biobank Domain Schema",
+  "type": "object",
+  "$defs": {
+    "ResearchProject": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        },
+        "projectName": {
+          "type": "string"
+        },
+        "projectType": {
+          "type": "string"
+        },
+        "projectCode": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "projectId",
+        "projectName"
+      ]
+    },
+    "BiodataDataset": {
+      "type": "object",
+      "properties": {
+        "datasetId": {
+          "type": "string"
+        },
+        "datasetType": {
+          "type": "string"
+        },
+        "researchDomain": {
+          "type": "string"
+        },
+        "dataOwnerUnit": {
+          "type": "string"
+        },
+        "datasetLifecycleStage": {
+          "type": "string"
+        },
+        "projectRef": {
+          "type": "string"
+        },
+        "containsSensitiveData": {
+          "type": "boolean"
+        },
+        "recordCount": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "datasetId",
+        "datasetType",
+        "dataOwnerUnit",
+        "datasetLifecycleStage"
+      ]
+    },
+    "MetadataCommon": {
+      "type": "object",
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "classificationLevel": {
+          "type": "string"
+        },
+        "lawfulBasisRef": {
+          "type": "string"
+        },
+        "retentionPolicyRef": {
+          "type": "string"
+        },
+        "securityLevel": {
+          "type": "string"
+        },
+        "criticality": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Freezer": {
+      "type": "object",
+      "properties": {
+        "freezerId": {
+          "type": "string"
+        },
+        "freezerType": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "managedBy": {
+          "type": "string"
+        },
+        "targetTemperatureC": {
+          "type": "number"
+        },
+        "backupPower": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "freezerId",
+        "location"
+      ]
+    },
+    "DatasetLifecycleEvent": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string"
+        },
+        "eventType": {
+          "type": "string"
+        },
+        "lifecycleStage": {
+          "type": "string"
+        },
+        "responsibleUnit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "StorageAccessLog": {
+      "type": "object",
+      "properties": {
+        "accessLogId": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "string"
+        },
+        "datasetRef": {
+          "type": "string"
+        },
+        "cardReaderId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "accessLogId",
+        "timestamp",
+        "action",
+        "datasetRef"
+      ]
+    },
+    "PolicyConstraint": {
+      "type": "object",
+      "properties": {
+        "ruleId": {
+          "type": "string"
+        },
+        "ruleType": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

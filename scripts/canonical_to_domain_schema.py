@@ -11,7 +11,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 DEFAULT_INPUT = PROJECT_ROOT / "model_canonical" / "model.canonical.json"
-DEFAULT_PROFILE = PROJECT_ROOT / "profiles" / "person_domain_profile.json"
+DEFAULT_PROFILE = PROJECT_ROOT / "profiles" / "biobank_domain_profile.json"
 DEFAULT_OUTPUT = PROJECT_ROOT / "schema" / "domain.schema.json"
 
 
