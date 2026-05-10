@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/library.schema.json",
+  "title": "Library Domain Schema",
+  "type": "object",
+  "$defs": {
+    "LibraryMember": {
+      "type": "object",
+      "properties": {
+        "memberId": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "memberType": {
+          "type": "string"
+        },
+        "libraryCardNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "membershipExpiryDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "related_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LibraryItem"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "memberId",
+        "fullName",
+        "libraryCardNumber"
+      ]
+    },
+    "LibraryItem": {
+      "type": "object",
+      "properties": {
+        "itemId": {
+          "type": "string"
+        },
+        "itemType": {
+          "type": "string"
+        },
+        "genre": {
+          "type": "string"
+        },
+        "owningBranch": {
+          "type": "string"
+        },
+        "availabilityStatus": {
+          "type": "string"
+        },
+        "isbn": {
+          "type": "string"
+        },
+        "publicationYear": {
+          "type": "integer"
+        },
+        "loanPeriodDays": {
+          "type": "integer"
+        },
+        "classified_by": {
+          "$ref": "#/$defs/MetadataCommon"
+        },
+        "stored_in": {
+          "$ref": "#/$defs/LibraryBranch"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "itemId",
+        "itemType",
+        "owningBranch",
+        "availabilityStatus",
+        "classified_by",
+        "stored_in"
+      ]
+    },
+    "MetadataCommon": {
+      "type": "object",
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "classificationLevel": {
+          "type": "string"
+        },
+        "lawfulBasisRef": {
+          "type": "string"
+        },
+        "retentionPolicyRef": {
+          "type": "string"
+        },
+        "securityLevel": {
+          "type": "string"
+        },
+        "criticality": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "LibraryBranch": {
+      "type": "object",
+      "properties": {
+        "branchId": {
+          "type": "string"
+        },
+        "branchType": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "operatedBy": {
+          "type": "string"
+        },
+        "openingHours": {
+          "type": "string"
+        },
+        "hasSelfServiceKiosk": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "branchId",
+        "address"
+      ]
+    },
+    "CirculationEvent": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string"
+        },
+        "eventType": {
+          "type": "string"
+        },
+        "itemLifecycleStage": {
+          "type": "string"
+        },
+        "handledByStaffUnit": {
+          "type": "string"
+        },
+        "acts_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LibraryItem"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "LoanActivityLog": {
+      "type": "object",
+      "properties": {
+        "activityLogId": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "string"
+        },
+        "itemRef": {
+          "type": "string"
+        },
+        "staffMemberId": {
+          "type": "string"
+        },
+        "dueDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "by_subject": {
+          "$ref": "#/$defs/LibraryMember"
+        },
+        "targets_resource": {
+          "$ref": "#/$defs/LibraryItem"
+        },
+        "targets_storage": {
+          "$ref": "#/$defs/LibraryBranch"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "activityLogId",
+        "timestamp",
+        "action",
+        "itemRef",
+        "by_subject"
+      ]
+    },
+    "PolicyConstraint": {
+      "type": "object",
+      "properties": {
+        "ruleId": {
+          "type": "string"
+        },
+        "ruleType": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MetadataCommon"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

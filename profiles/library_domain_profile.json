@@ -1,0 +1,113 @@
+{
+  "domain": "library",
+  "description": "Domain profile for a public library system covering members, items, branches, circulation events, and loan activity logs.",
+
+  "class_mappings": {
+    "Subject": "LibraryMember",
+    "Resource": "LibraryItem",
+    "Storage": "LibraryBranch",
+    "ProcessEvent": "CirculationEvent",
+    "AccessLogEntry": "LoanActivityLog"
+  },
+
+  "attribute_mappings": {
+    "Subject.subjectId": "memberId",
+    "Subject.name": "fullName",
+    "Subject.subjectType": "memberType",
+    "Subject.primaryIdentifier": "libraryCardNumber",
+
+    "Resource.resourceId": "itemId",
+    "Resource.resourceType": "itemType",
+    "Resource.domain": "genre",
+    "Resource.owner": "owningBranch",
+    "Resource.lifecycleStage": "availabilityStatus",
+
+    "Storage.storageId": "branchId",
+    "Storage.storageType": "branchType",
+    "Storage.location": "address",
+    "Storage.managedBy": "operatedBy",
+
+    "ProcessEvent.processId": "eventId",
+    "ProcessEvent.processType": "eventType",
+    "ProcessEvent.lifecycleStage": "itemLifecycleStage",
+    "ProcessEvent.responsibleUnit": "handledByStaffUnit",
+
+    "AccessLogEntry.logId": "activityLogId",
+    "AccessLogEntry.action": "action",
+    "AccessLogEntry.resourceRef": "itemRef"
+  },
+
+  "required": {
+    "LibraryMember": [
+      "memberId",
+      "fullName",
+      "libraryCardNumber"
+    ],
+    "LibraryItem": [
+      "itemId",
+      "itemType",
+      "owningBranch",
+      "availabilityStatus"
+    ],
+    "LibraryBranch": [
+      "branchId",
+      "address"
+    ],
+    "LoanActivityLog": [
+      "activityLogId",
+      "timestamp",
+      "action",
+      "itemRef"
+    ]
+  },
+
+  "additional_attributes": {
+    "LibraryMember": [
+      {
+        "name": "email",
+        "type": "string",
+        "format": "email"
+      },
+      {
+        "name": "membershipExpiryDate",
+        "type": "string",
+        "format": "date"
+      }
+    ],
+    "LibraryItem": [
+      {
+        "name": "isbn",
+        "type": "string"
+      },
+      {
+        "name": "publicationYear",
+        "type": "integer"
+      },
+      {
+        "name": "loanPeriodDays",
+        "type": "integer"
+      }
+    ],
+    "LibraryBranch": [
+      {
+        "name": "openingHours",
+        "type": "string"
+      },
+      {
+        "name": "hasSelfServiceKiosk",
+        "type": "boolean"
+      }
+    ],
+    "LoanActivityLog": [
+      {
+        "name": "staffMemberId",
+        "type": "string"
+      },
+      {
+        "name": "dueDate",
+        "type": "string",
+        "format": "date"
+      }
+    ]
+  }
+}
