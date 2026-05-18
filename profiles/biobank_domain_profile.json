@@ -5,9 +5,9 @@
   "class_mappings": {
     "Subject": "ResearchProject",
     "Resource": "BiodataDataset",
-    "Storage": "Freezer",
+    "Repository": "Freezer",
     "ProcessEvent": "DatasetLifecycleEvent",
-    "AccessLogEntry": "StorageAccessLog"
+    "AccessLogEntry": "RepositoryAccessLog"
   },
 
   "attribute_mappings": {
@@ -22,10 +22,10 @@
     "Resource.owner": "dataOwnerUnit",
     "Resource.lifecycleStage": "datasetLifecycleStage",
 
-    "Storage.storageId": "freezerId",
-    "Storage.storageType": "freezerType",
-    "Storage.location": "location",
-    "Storage.managedBy": "managedBy",
+    "Repository.repositoryId": "freezerId",
+    "Repository.repositoryType": "freezerType",
+    "Repository.location": "location",
+    "Repository.managedBy": "managedBy",
 
     "ProcessEvent.processId": "eventId",
     "ProcessEvent.processType": "eventType",
@@ -52,7 +52,7 @@
       "freezerId",
       "location"
     ],
-    "StorageAccessLog": [
+    "RepositoryAccessLog": [
       "accessLogId",
       "timestamp",
       "action",
@@ -85,7 +85,7 @@
         "type": "boolean"
       }
     ],
-    "StorageAccessLog": [
+    "RepositoryAccessLog": [
       {
         "name": "cardReaderId",
         "type": "string"

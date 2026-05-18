@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0" version="29.6.1">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0">
   <diagram id="Aqylcy7JqItOLCl3pxZD" name="KU • Fælles informationsmodel">
-    <mxGraphModel dx="1015" dy="1105" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="934" dy="1105" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -62,13 +61,13 @@
         <mxCell id="JZf-lMQR9-Nxsu_enfEH-19" parent="JZf-lMQR9-Nxsu_enfEH-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;whiteSpace=wrap;html=1;" value="+ criticality: String // businessCritical,safetyCritical..." vertex="1">
           <mxGeometry height="26" width="320" y="172" as="geometry" />
         </mxCell>
-        <mxCell id="JZf-lMQR9-Nxsu_enfEH-20" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Storage" vertex="1">
+        <mxCell id="JZf-lMQR9-Nxsu_enfEH-20" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Repository" vertex="1">
           <mxGeometry height="142" width="260" x="300" y="300" as="geometry" />
         </mxCell>
-        <mxCell id="JZf-lMQR9-Nxsu_enfEH-21" parent="JZf-lMQR9-Nxsu_enfEH-20" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;whiteSpace=wrap;html=1;" value="+ storageId: String" vertex="1">
+        <mxCell id="JZf-lMQR9-Nxsu_enfEH-21" parent="JZf-lMQR9-Nxsu_enfEH-20" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;whiteSpace=wrap;html=1;" value="+ repositoryId: String" vertex="1">
           <mxGeometry height="26" width="260" y="26" as="geometry" />
         </mxCell>
-        <mxCell id="JZf-lMQR9-Nxsu_enfEH-22" parent="JZf-lMQR9-Nxsu_enfEH-20" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;whiteSpace=wrap;html=1;" value="+ storageType: String // db,archive,room,locker,device" vertex="1">
+        <mxCell id="JZf-lMQR9-Nxsu_enfEH-22" parent="JZf-lMQR9-Nxsu_enfEH-20" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;whiteSpace=wrap;html=1;" value="+ repositoryType: String // db,archive,room,locker,device" vertex="1">
           <mxGeometry height="38" width="260" y="52" as="geometry" />
         </mxCell>
         <mxCell id="JZf-lMQR9-Nxsu_enfEH-23" parent="JZf-lMQR9-Nxsu_enfEH-20" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;whiteSpace=wrap;html=1;" value="+ location: String" vertex="1">
@@ -212,8 +211,9 @@
             <mxPoint y="-195" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="JZf-lMQR9-Nxsu_enfEH-57" edge="1" parent="1" source="JZf-lMQR9-Nxsu_enfEH-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;dashed=1;" target="JZf-lMQR9-Nxsu_enfEH-20" value="targets_storage">
+        <mxCell id="JZf-lMQR9-Nxsu_enfEH-57" edge="1" parent="1" source="JZf-lMQR9-Nxsu_enfEH-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;dashed=1;" target="JZf-lMQR9-Nxsu_enfEH-20" value="targets_repository">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
             <Array as="points">
               <mxPoint x="400" y="470" />
               <mxPoint x="400" y="470" />

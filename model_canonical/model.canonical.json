@@ -81,14 +81,14 @@
     },
     {
       "id": "JZf-lMQR9-Nxsu_enfEH-20",
-      "name": "Storage",
+      "name": "Repository",
       "attributes": [
         {
-          "name": "storageId",
+          "name": "repositoryId",
           "type": "string"
         },
         {
-          "name": "storageType",
+          "name": "repositoryType",
           "type": "string"
         },
         {
@@ -183,7 +183,7 @@
     {
       "name": "stored_in",
       "from": "Resource",
-      "to": "Storage",
+      "to": "Repository",
       "source_cardinality": "0..*",
       "target_cardinality": "1"
     },
@@ -209,9 +209,9 @@
       "target_cardinality": "0..1"
     },
     {
-      "name": "targets_storage",
+      "name": "targets_repository",
       "from": "AccessLogEntry",
-      "to": "Storage",
+      "to": "Repository",
       "source_cardinality": "0..*",
       "target_cardinality": "0..1"
     },

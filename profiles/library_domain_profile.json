@@ -5,7 +5,7 @@
   "class_mappings": {
     "Subject": "LibraryMember",
     "Resource": "LibraryItem",
-    "Storage": "LibraryBranch",
+    "Repository": "LibraryBranch",
     "ProcessEvent": "CirculationEvent",
     "AccessLogEntry": "LoanActivityLog"
   },
@@ -22,10 +22,10 @@
     "Resource.owner": "owningBranch",
     "Resource.lifecycleStage": "availabilityStatus",
 
-    "Storage.storageId": "branchId",
-    "Storage.storageType": "branchType",
-    "Storage.location": "address",
-    "Storage.managedBy": "operatedBy",
+    "Repository.repositoryId": "branchId",
+    "Repository.repositoryType": "branchType",
+    "Repository.location": "address",
+    "Repository.managedBy": "operatedBy",
 
     "ProcessEvent.processId": "eventId",
     "ProcessEvent.processType": "eventType",
