@@ -152,7 +152,7 @@
       },
       "additionalProperties": false
     },
-    "StorageAccessLog": {
+    "RepositoryAccessLog": {
       "type": "object",
       "properties": {
         "accessLogId": {
@@ -177,7 +177,7 @@
         "targets_resource": {
           "$ref": "#/$defs/BiodataDataset"
         },
-        "targets_storage": {
+        "targets_repository": {
           "$ref": "#/$defs/Freezer"
         }
       },

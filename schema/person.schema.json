@@ -61,7 +61,7 @@
           "$ref": "#/$defs/MetadataCommon"
         },
         "stored_in": {
-          "$ref": "#/$defs/Storage"
+          "$ref": "#/$defs/Repository"
         }
       },
       "additionalProperties": false,
@@ -94,13 +94,13 @@
       },
       "additionalProperties": false
     },
-    "Storage": {
+    "Repository": {
       "type": "object",
       "properties": {
-        "storageId": {
+        "repositoryId": {
           "type": "string"
         },
-        "storageType": {
+        "repositoryType": {
           "type": "string"
         },
         "location": {
@@ -158,8 +158,8 @@
         "targets_resource": {
           "$ref": "#/$defs/Resource"
         },
-        "targets_storage": {
-          "$ref": "#/$defs/Storage"
+        "targets_repository": {
+          "$ref": "#/$defs/Repository"
         }
       },
       "additionalProperties": false,

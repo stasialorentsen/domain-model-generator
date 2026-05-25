@@ -190,7 +190,7 @@
         "targets_resource": {
           "$ref": "#/$defs/LibraryItem"
         },
-        "targets_storage": {
+        "targets_repository": {
           "$ref": "#/$defs/LibraryBranch"
         }
       },
