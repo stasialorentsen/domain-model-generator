@@ -18,7 +18,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Default input/output paths
 DEFAULT_INPUT = PROJECT_ROOT / "model_canonical" / "model.canonical.json"
-DEFAULT_PROFILE = PROJECT_ROOT / "profiles" / "biobank_domain_profile.json"
+DEFAULT_PROFILE = PROJECT_ROOT / "profiles" / "test_domain_profile.json"
 DEFAULT_OUTPUT = PROJECT_ROOT / "schema" / "domain.schema.json"
 
 
